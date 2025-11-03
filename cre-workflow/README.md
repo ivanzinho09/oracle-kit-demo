@@ -38,7 +38,7 @@ The CRE workflow automates the settlement of prediction markets by:
 3. **Settling** the market on-chain by submitting a cryptographically signed report
 4. **Storing** settlement data in a Firestore database for audit and frontend display
 
-This workflow demonstrates CRE's three key capabilities:
+This workflow demonstrates  key CRE triggers and capabilities:
 - **EVM Log Trigger**: Event-driven execution
 - **HTTP Capability**: External API calls (Gemini, Firestore)
 - **EVM Write Capability**: Signed transaction submission
