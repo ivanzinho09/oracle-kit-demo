@@ -348,11 +348,22 @@ cp .env.example .env
 
 #### Step 12: Populate Environment Variables
 
-Open `.env` and add your:
-- ETH private key
-- Gemini API key
-- Firebase API key
-- Firebase project ID
+Open `.env` and add your private key, gemini key, firebase key, and firebase project id.
+
+```
+CRE_ETH_PRIVATE_KEY=
+
+# Profile to use for this environment (e.g. local-simulation, production, staging)
+CRE_TARGET=local-simulation
+
+# Gemini configuration: API Key
+GEMINI_API_KEY_VAR=
+
+# Firebase configuration: API Key & Project Id
+FIREBASE_API_KEY_VAR=
+FIREBASE_PROJECT_ID_VAR=
+
+```
 
 #### Step 13: Request Settlement of the Market
 
@@ -371,17 +382,18 @@ cast send $MARKET_ADR \
 
 #### Step 14: (Optional) Simulate the Workflow
 
+Run CRE in simulation mode to test the workflow without the `--broadcast` flag:
+
+```bash
+cre workflow simulate prediction-market-demo --target local-simulation
+```
+
 **Note:** This will:
 - Run CRE locally in simulation mode
 - Make a real HTTP request to Gemini
 - Make a real HTTP POST request to Firebase
 - **NOT** write results on-chain (no `--broadcast` flag)
 
-Run CRE in simulation mode to test the workflow:
-
-```bash
-cre workflow simulate prediction-market-demo --target local-simulation
-```
 
 When prompted, enter the txn hash from step 13 and enter the log index of `0`.
 
