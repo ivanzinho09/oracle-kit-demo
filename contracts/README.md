@@ -5,6 +5,7 @@ This directory contains a Foundry project implementing a binary prediction marke
 ## Table of Contents
 
 - [Overview](#overview)
+- [Dependencies](#dependencies)
 - [SimpleMarket.sol Contract](#simplemarketsol-contract)
   - [Architecture](#architecture)
   - [Market Lifecycle](#market-lifecycle)
@@ -12,11 +13,10 @@ This directory contains a Foundry project implementing a binary prediction marke
 - [Testing](#testing)
   - [Test Coverage](#test-coverage)
   - [Running Tests](#running-tests)
-- [Deployment Scripts](#deployment-scripts)
+- [Scripts](#scripts)
   - [Script Overview](#script-overview)
-  - [Environment Setup](#environment-setup)
+  - [Script Setup](#script-setup)
   - [Script Execution](#script-execution)
-- [Dependencies](#dependencies)
 
 ## Overview
 
@@ -27,6 +27,34 @@ The contracts directory is a standard Foundry project containing:
 - **Scripts**: Forge scripts for end-to-end deployment and interaction
 - **Interfaces**: Supporting interfaces for CRE receiver pattern
 - **Mock Contracts**: Mock ERC-20 token (USDC) for testing
+
+## Dependencies
+
+The project uses the following dependencies:
+
+- **Foundry/Forge**: Smart contract development framework
+- **OpenZeppelin Contracts**: `ERC20`, `SafeERC20` for token operations
+- **Forge Standard Library**: Testing utilities and console logging
+
+### Installing Dependencies
+
+```bash
+# Install forge dependencies
+forge install
+
+# Update dependencies
+forge update
+```
+
+### Dependency Remappings
+
+Configured in `foundry.toml`:
+
+```toml
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/"
+]
+```
 
 ## SimpleMarket.sol Contract
 
@@ -157,9 +185,9 @@ forge test --gas-report
 forge coverage
 ```
 
-## Deployment Scripts
+## Scripts
 
-The `script/` directory contains Forge scripts for end-to-end workflow execution on live networks.
+The `script/` directory contains Forge scripts for additional execution options. For a complete end to end walkthrough, see the [quick start](../README.md#quick-start).
 
 ### Script Overview
 
@@ -172,7 +200,7 @@ The `script/` directory contains Forge scripts for end-to-end workflow execution
 | `5_ClaimPrediction.s.sol`    | Claim winnings     | Calls `claimPrediction()` for winners              |
 | `SettleMarketManually.s.sol` | Manual override    | Calls `settleMarketManually()` if needed           |
 
-### Environment Setup
+### Script Setup
 
 Create a `.env` file in the `contracts/` directory:
 
@@ -263,7 +291,7 @@ At this point, the CRE workflow (in `cre-workflow/`) will:
 2. Query Gemini AI for the outcome
 3. Submit a signed settlement report via `onReport()`
 
-See the [`cre-workflow README`](../cre-workflow/README.md) for details on running the CRE workflow. Note down the contract address of your deployed market and the transaction hash associated with the SettlementRequested event emitted by step 4. Use these values when configuring your `cre-workflow`.
+See the [quickstart section](../README.md#quick-start) for details on running the CRE workflow. Note down the contract address of your deployed market and the transaction hash associated with the SettlementRequested event emitted by step 4. Use these values when configuring your `cre-workflow`.
 
 #### 6. Claim Prediction
 
@@ -283,7 +311,7 @@ forge script script/5_ClaimPrediction.s.sol \
 
 #### 7. Manual Settlement (Optional)
 
-If the AI returns `INCONCLUSIVE`, use this script to manually settle.
+If the LLM returns `INCONCLUSIVE`, use this script to manually settle.
 
 ```bash
 # Set OUTCOME in .env first
@@ -294,34 +322,6 @@ forge script script/SettleMarketManually.s.sol \
 ```
 
 **Prerequisites**: Market status must be `NeedsManual`.
-
-## Dependencies
-
-The project uses the following dependencies:
-
-- **Foundry/Forge**: Smart contract development framework
-- **OpenZeppelin Contracts**: `ERC20`, `SafeERC20` for token operations
-- **Forge Standard Library**: Testing utilities and console logging
-
-### Installing Dependencies
-
-```bash
-# Install forge dependencies
-forge install
-
-# Update dependencies
-forge update
-```
-
-### Dependency Remappings
-
-Configured in `foundry.toml`:
-
-```toml
-remappings = [
-    "@openzeppelin/=lib/openzeppelin-contracts/"
-]
-```
 
 ## Interacting with Deployed Contracts
 
@@ -337,11 +337,3 @@ cast call $MARKET "getPrediction(uint256)(uint256,uint8,bool)" $MARKET_ID --rpc-
 # Get evidence URI
 cast call $MARKET "getUri(uint256)(string)" $MARKET_ID --rpc-url $RPC_URL
 ```
-
-## Additional Resources
-
-- [Foundry Documentation](https://book.getfoundry.sh/)
-- [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts)
-- [Chainlink CRE Documentation](https://docs.chain.link/)
-- [Sepolia Faucets](https://faucets.chain.link/)
-- [USDC Testnet Faucet](https://faucet.circle.com/)

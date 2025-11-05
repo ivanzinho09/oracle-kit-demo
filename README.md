@@ -16,9 +16,6 @@ This repository demonstrates an end-to-end **automated, AI-powered prediction ma
 - [Quick Start](#quick-start)
   - [Option 1: Test CRE Workflow Only (Fastest)](#option-1-test-cre-workflow-only-fastest)
   - [Option 2: Full End-to-End Test](#option-2-full-end-to-end-test)
-- [Troubleshooting](#troubleshooting)
-  - [Common Issues](#common-issues)
-  - [Getting Help](#getting-help)
 - [Security Considerations](#security-considerations)
 
 ## What This Demo Does
@@ -481,32 +478,6 @@ bun run dev
 ```
 
 The frontend will be available at `http://localhost:3000`
-
-## Troubleshooting
-
-### Common Issues
-
-**Issue**: CRE simulation fails to find network
-- **Solution**: Check `chainSelectorName` in `config.json` matches CRE's supported chains
-
-**Issue**: Gemini API returns 401 Unauthorized
-- **Solution**: Verify `GEMINI_API_KEY_VAR` in `.env` and `secrets.yaml`
-
-**Issue**: Market settlement fails with "MarketNotClosed"
-- **Solution**: Wait for market close time (3 minutes after creation)
-
-**Issue**: Claim fails with "IncorrectPrediction"
-- **Solution**: Your prediction didn't match the winning outcome
-
-**Issue**: Firestore write fails with permission denied
-- **Solution**: Check security rules allow anonymous writes (see [firebase-setup.md](./firebase-setup.md))
-
-### Getting Help
-
-- **CRE Documentation**: [https://docs.chain.link/](https://docs.chain.link/)
-- **Foundry Book**: [https://book.getfoundry.sh/](https://book.getfoundry.sh/)
-- **Gemini API Docs**: [https://ai.google.dev/](https://ai.google.dev/)
-- **Firebase Docs**: [https://firebase.google.com/docs](https://firebase.google.com/docs)
 
 ## Security Considerations
 
