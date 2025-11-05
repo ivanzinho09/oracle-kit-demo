@@ -228,7 +228,7 @@ forge create src/SimpleMarket.sol:SimpleMarket \
 Note down the new contract address and export it:
 
 ```bash
-export MARKET_ADR=0x5De80647572bE8B6a9ba1350CDf3dB9f95B4F266
+export MARKET_ADR=...
 ```
 
 
@@ -247,7 +247,9 @@ Use Foundry's `cast` command to convert this from hex to decimal:
 
 ```bash
 cast to-dec 0x000000000000000000000000000000000000000000000000000000000000001c
-#Example output: 28
+# Example output: 28
+# This number increments each time a new market is created.
+# The first market ID for a new contract will be 0.
 ```
 
 This marketID will be used in future steps.
@@ -264,7 +266,7 @@ cast send $MARKET_ADR \
 ```
 
 > [!IMPORTANT]
-> Markets close after 3 minutes. Complete step 6 before it closes!
+> Markets close after 3 minutes. Complete step 7 before it closes!
 
 #### Step 7: (Optional) Place a prediction
 
@@ -280,58 +282,28 @@ cast send 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238 \
   --private-key $PRIVATE_KEY
 
 # Then, make your prediction
-# MarketID: Your market ID from step 4
+# MarketID: Your market ID from step 5
 # Outcome: 1 = No, 2 = Yes
 # Amount: In USDC (6 decimals), so 1000000 = 1 USDC
 cast send $MARKET_ADR \
   "makePrediction(uint256,uint8,uint256)" \
-  28 \
+  0 \
   2 \
   1000000 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
 ```
 
-
-#### Step 8: (Optional)  Request Settlement of the Market
-
-> [!IMPORTANT]
->  Market must be closed before settlement can be requested. By default, markets close after 3 minutes. Make sure to use the market ID obtained from Step 4.
-
-```bash
-cast send $MARKET_ADR \
-  "requestSettlement(uint256)" \
-  28 \
-  --rpc-url $RPC_URL \
-  --private-key $PRIVATE_KEY
-```
-
-**Note the Transaction Hash** - you will need this one!
-
-Example:
-```
-0xeffa89c01c7956dd46305ef5e5a6077800c9e0370415c2f0e61940b36f309c9b
-```
-
-
-
-#### Step 9: Navigate to CRE Workflow Directory
+#### Step 8: Install Workflow Dependencies
 
 ```bash
 cd ../cre-workflow/prediction-market-demo
-```
-
-
-
-#### Step 10: Install Workflow Dependencies
-
-```bash
 bun install
 ```
 
 
 
-#### Step 11: Configure Workflow Settings
+#### Step 9: Configure Workflow Settings
 
 Add your market address to `cre-workflow/prediction-market-demo/config.json`:
 
@@ -340,7 +312,7 @@ Add your market address to `cre-workflow/prediction-market-demo/config.json`:
   "geminiModel": "gemini-2.5-flash",
   "evms": [
     {
-      "marketAddress": "0x5De80647572bE8B6a9ba1350CDf3dB9f95B4F266",
+      "marketAddress": "",
       "chainSelectorName": "ethereum-testnet-sepolia",
       "gasLimit": "1000000"
     }
@@ -350,7 +322,7 @@ Add your market address to `cre-workflow/prediction-market-demo/config.json`:
 
 
 
-#### Step 12: Configure RPC Endpoint
+#### Step 10: Configure RPC Endpoint
 
 Add ETH Sepolia RPC URL to `cre-workflow/project.yaml`:
 
@@ -358,12 +330,12 @@ Add ETH Sepolia RPC URL to `cre-workflow/project.yaml`:
 local-simulation:
   rpcs:
     - chain-name: ethereum-testnet-sepolia
-      url: https://0xrpc.io/sep
+      url: <your_rpc_url>
 ```
 
 
 
-#### Step 13: Setup Environment Variables
+#### Step 11: Setup Environment Variables
 
 Navigate to the `cre-workflow` directory and copy the example `.env`:
 
@@ -374,7 +346,7 @@ cp .env.example .env
 
 
 
-#### Step 14: Populate Environment Variables
+#### Step 12: Populate Environment Variables
 
 Open `.env` and add your:
 - ETH private key
@@ -382,15 +354,30 @@ Open `.env` and add your:
 - Firebase API key
 - Firebase project ID
 
+#### Step 13: Request Settlement of the Market
 
+> [!IMPORTANT]
+>  Market must be closed before settlement can be requested. By default, markets close after 3 minutes. Make sure to use the market ID obtained from step 5.
 
-#### Step 15: (Optional) Simulate the Workflow
+```bash
+cast send $MARKET_ADR \
+  "requestSettlement(uint256)" \
+  0 \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+```
+
+**Note the Transaction Hash** - you will need this one!
+
+#### Step 14: (Optional) Simulate the Workflow
 
 Run CRE in simulation mode to test the workflow:
 
 ```bash
 cre workflow simulate prediction-market-demo --target local-simulation
 ```
+
+When prompted, enter the txn hash from step 14 and enter the log index of `0`.
 
 **Note:** This will:
 - Run CRE locally in simulation mode
@@ -400,7 +387,7 @@ cre workflow simulate prediction-market-demo --target local-simulation
 
 
 
-#### Step 16: Broadcast the Workflow Transaction
+#### Step 15: Broadcast the Workflow Transaction
 
 Execute the workflow and write results on-chain:
 
@@ -408,31 +395,33 @@ Execute the workflow and write results on-chain:
 cre workflow simulate prediction-market-demo --target local-simulation --broadcast
 ```
 
-#### Step 16.5: (Conditional, see warning) Manual market settlement
+When prompted, enter the txn hash from step 14 and enter the log index of `0`.
+
+#### Step 15.5: (Conditional, see warning) Manual market settlement
 
 > [!IMPORTANT]
 > This function can only be called if the response from Gemini was INCONCLUSIVE. This is a fallback mechanism to allow operators to manually settle inconclusive markets.
 
 ```bash
 # Manually settle a market that Gemini could not settle
-# MarketID: Your market ID from step 4
+# MarketID: Your market ID from step 5
 # Outcome: 1 = No, 2 = Yes
 cast send $MARKET_ADR \
   "settleMarketManually(uint256,uint8)" \
-  28 \
+  0 \
   2 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
 ```
 
-#### Step 17: Claim your prediction
+#### Step 16: (Optional) Claim your prediction
 
 ```bash
 # Claim your wager after the market is settled
-# MarketID: Your market ID from step 4
+# MarketID: Your market ID from step 5
 cast send $MARKET_ADR \
   "claimPrediction(uint256)" \
-  28 \
+  0 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
 ```
@@ -444,9 +433,10 @@ Potential errors thrown:
 NotSettledYet(Status current)   // Market hasn't been settled yet
 AlreadyClaimed()                // User already claimed their winnings
 NoWinners()                     // No one predicted the winning side
+IncorrectPrediction()           // User made the incorrect prediction
 ```
 
-#### Step 18: Setup the Frontend
+#### Step 17: Setup the Frontend
 
 Navigate to the frontend directory:
 
@@ -456,7 +446,7 @@ bun install
 ```
 
 
-9: Configure Frontend Environment
+#### Step 18: Configure Frontend Environment
 
 Copy the example environment file:
 
@@ -464,14 +454,16 @@ Copy the example environment file:
 cp .env.local.example .env.local
 ```
 
-Open `.env.local` and add your Firebase project:
-- `apiKey`
-- `authDomain`
-- `projectId`
+Open `.env.local` and add your Firebase project details:
+```
+NEXT_PUBLIC_FIREBASE_API_KEY="your-api-key"
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="your-auth-domain"
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="your-project-id"
+```
 
 
 
-#### Step 20: Run the Frontend
+#### Step 19: Run the Frontend
 
 ```bash
 bun run dev
