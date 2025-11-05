@@ -228,7 +228,7 @@ forge create src/SimpleMarket.sol:SimpleMarket \
 Note down the new contract address and export it:
 
 ```bash
-export MARKET_ADR=...
+export MARKET_ADDRESS=...
 ```
 
 
@@ -238,7 +238,7 @@ export MARKET_ADR=...
 Check the `nextMarketId`:
 
 ```bash
-cast call $MARKET_ADR \
+cast call $MARKET_ADDRESS \
   "nextMarketId()" \
   --rpc-url $RPC_URL
 ```
@@ -258,7 +258,7 @@ This marketID will be used in future steps.
 #### Step 6: Create a New Market
 
 ```bash
-cast send $MARKET_ADR \
+cast send $MARKET_ADDRESS \
   "newMarket(string)" \
   "Will the buffalo bills win the 2025 superbowl?" \
   --rpc-url $RPC_URL \
@@ -266,26 +266,32 @@ cast send $MARKET_ADR \
 ```
 
 > [!IMPORTANT]
-> Markets close after 3 minutes. Complete step 7 before it closes!
+> Markets close after 3 minutes. Complete both step 7 and 6 before it closes!
 
-#### Step 7: (Optional) Place a prediction
+#### Step 7: (Optional) Approve USDC for wager
+
+Approve the SimpleMarket contract to spend your USDC. 
 
 ```bash
-# First, approve the SimpleMarket contract to spend your USDC
 # USDC on Sepolia: 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 # Amount: In USDC (6 decimals), so 1000000 = 1 USDC
 cast send 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238 \
   "approve(address,uint256)" \
-  $MARKET_ADR \
+  $MARKET_ADDRESS \
   1000000 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
+```
 
-# Then, make your prediction
+#### Step 8: (Optional) Place a prediction
+
+Place your prediction, wagering some amount of USDC.
+
+```bash
 # MarketID: Your market ID from step 5
 # Outcome: 1 = No, 2 = Yes
 # Amount: In USDC (6 decimals), so 1000000 = 1 USDC
-cast send $MARKET_ADR \
+cast send $MARKET_ADDRESS \
   "makePrediction(uint256,uint8,uint256)" \
   0 \
   2 \
@@ -294,7 +300,7 @@ cast send $MARKET_ADR \
   --private-key $PRIVATE_KEY
 ```
 
-#### Step 8: Install Workflow Dependencies
+#### Step 9: Install Workflow Dependencies
 
 ```bash
 cd ../cre-workflow/prediction-market-demo
@@ -303,7 +309,7 @@ bun install
 
 
 
-#### Step 9: Configure Workflow Settings
+#### Step 10: Configure Workflow Settings
 
 Add your market address to `cre-workflow/prediction-market-demo/config.json`:
 
@@ -322,7 +328,7 @@ Add your market address to `cre-workflow/prediction-market-demo/config.json`:
 
 
 
-#### Step 10: Configure RPC Endpoint
+#### Step 11: Configure RPC Endpoint
 
 Add ETH Sepolia RPC URL to `cre-workflow/project.yaml`:
 
@@ -335,7 +341,7 @@ local-simulation:
 
 
 
-#### Step 11: Setup Environment Variables
+#### Step 12: Setup Environment Variables
 
 Navigate to the `cre-workflow` directory and copy the example `.env`:
 
@@ -346,7 +352,7 @@ cp .env.example .env
 
 
 
-#### Step 12: Populate Environment Variables
+#### Step 13: Populate Environment Variables
 
 Open `.env` and add your private key, gemini key, firebase key, and firebase project id.
 
@@ -365,13 +371,13 @@ FIREBASE_PROJECT_ID_VAR=
 
 ```
 
-#### Step 13: Request Settlement of the Market
+#### Step 14: Request Settlement of the Market
 
 > [!IMPORTANT]
 >  Market must be closed before settlement can be requested. By default, markets close after 3 minutes. Make sure to use the market ID obtained from step 5.
 
 ```bash
-cast send $MARKET_ADR \
+cast send $MARKET_ADDRESS \
   "requestSettlement(uint256)" \
   0 \
   --rpc-url $RPC_URL \
@@ -380,7 +386,7 @@ cast send $MARKET_ADR \
 
 **Note the Transaction Hash** - you will need this one!
 
-#### Step 14: (Optional) Simulate the Workflow
+#### Step 15: (Optional) Simulate the Workflow
 
 Run CRE in simulation mode to test the workflow without the `--broadcast` flag:
 
@@ -395,11 +401,11 @@ cre workflow simulate prediction-market-demo --target local-simulation
 - **NOT** write results on-chain (no `--broadcast` flag)
 
 
-When prompted, enter the txn hash from step 13 and enter the log index of `0`.
+When prompted, enter the txn hash from step 14 and enter the log index of `0`.
 
 
 
-#### Step 15: Broadcast the Workflow Transaction
+#### Step 16: Broadcast the Workflow Transaction
 
 Execute the workflow and write results on-chain:
 
@@ -407,9 +413,9 @@ Execute the workflow and write results on-chain:
 cre workflow simulate prediction-market-demo --target local-simulation --broadcast
 ```
 
-When prompted, enter the txn hash from step 13 and enter the log index of `0`.
+When prompted, enter the txn hash from step 14 and enter the log index of `0`.
 
-#### Step 15.5: (Conditional, see warning) Manual market settlement
+#### Step 16.5: (Conditional, see warning) Manual market settlement
 
 > [!IMPORTANT]
 > This function can only be called if the response from Gemini was INCONCLUSIVE. This is a fallback mechanism to allow operators to manually settle inconclusive markets.
@@ -418,7 +424,7 @@ When prompted, enter the txn hash from step 13 and enter the log index of `0`.
 # Manually settle a market that Gemini could not settle
 # MarketID: Your market ID from step 5
 # Outcome: 1 = No, 2 = Yes
-cast send $MARKET_ADR \
+cast send $MARKET_ADDRESS \
   "settleMarketManually(uint256,uint8)" \
   0 \
   2 \
@@ -426,12 +432,12 @@ cast send $MARKET_ADR \
   --private-key $PRIVATE_KEY
 ```
 
-#### Step 16: (Optional) Claim your prediction
+#### Step 17: (Optional) Claim your prediction
 
 ```bash
 # Claim your wager after the market is settled
 # MarketID: Your market ID from step 5
-cast send $MARKET_ADR \
+cast send $MARKET_ADDRESS \
   "claimPrediction(uint256)" \
   0 \
   --rpc-url $RPC_URL \
@@ -448,7 +454,7 @@ NoWinners()                     // No one predicted the winning side
 IncorrectPrediction()           // User made the incorrect prediction
 ```
 
-#### Step 17: Setup the Frontend
+#### Step 18: Setup the Frontend
 
 Navigate to the frontend directory:
 
@@ -458,7 +464,7 @@ bun install
 ```
 
 
-#### Step 18: Configure Frontend Environment
+#### Step 19: Configure Frontend Environment
 
 Copy the example environment file:
 
@@ -475,7 +481,7 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID="your-project-id"
 
 
 
-#### Step 19: Run the Frontend
+#### Step 20: Run the Frontend
 
 ```bash
 bun run dev
