@@ -64,6 +64,20 @@ graph TD
 
 ---
 
+## 🌐 Network Information
+
+This project is designed to run on the **Superposition Testnet**.
+
+- **Network Name**: Superposition Testnet
+- **Chain ID**: `98985`
+- **RPC URL**: `https://testnet-rpc.superposition.so`
+- **Explorer**: [testnet-explorer.superposition.so](https://testnet-explorer.superposition.so/)
+- **Currency**: ETH
+
+*Note: Ensure your `NEXT_PUBLIC_RPC_URL` in `.env.local` matches the above RPC.*
+
+---
+
 ## 📸 Feature Walkthrough
 
 ### Admin Dashboard & Tools
