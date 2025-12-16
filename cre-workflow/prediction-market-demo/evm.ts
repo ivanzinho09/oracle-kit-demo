@@ -2,14 +2,9 @@
 // EVM on-chain settlement for prediction markets.
 // Uses CRE EVM Write capability to submit settlement reports.
 
-import {
-  cre,
-  type Runtime,
-  getNetwork,
-  bytesToHex,
-  hexToBase64,
-} from "@chainlink/cre-sdk";
-import {encodeAbiParameters, parseAbiParameters } from "viem";
+import { cre, type Runtime, bytesToHex, hexToBase64 } from "@chainlink/cre-sdk";
+import { encodeAbiParameters, parseAbiParameters, createWalletClient, http, defineChain, type Hex } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
 import { GeminiResponseSchema, type Config, type LLMResult } from "./types";
 
 /*********************************
@@ -26,59 +21,60 @@ import { GeminiResponseSchema, type Config, type LLMResult } from "./types";
  * @param responseId - Unique identifier from the Gemini response
  * @returns Transaction hash of the settlement transaction
  */
-export function settleMarket(runtime: Runtime<Config>, marketId: bigint, outcomeJson: string, responseId: string): string {
+export async function settleMarket(runtime: Runtime<Config>, marketId: bigint, outcomeJson: string, responseId: string): Promise<string> {
 
-  // Validate & parse the Gemini output (throws on invalid structure or out-of-range values)
+  // Validate & parse Gemini output
   const parsed: LLMResult = GeminiResponseSchema.parse(JSON.parse(outcomeJson));
-
   const evmCfg = runtime.config.evms[0];
 
-  // Resolve concrete chain selector from chainSelectorName
-  const network = getNetwork({
-    chainFamily: "evm",
-    chainSelectorName: evmCfg.chainSelectorName,
-    isTestnet: true,
-  });
-  if (!network) throw new Error(`Unknown chain name: ${evmCfg.chainSelectorName}`);
-
   runtime.log(`Settling Market at contract: ${evmCfg.marketAddress}`);
+  runtime.log(`Outcome: ${parsed.result}, Confidence: ${parsed.confidence}`);
 
-  const evmClient = new cre.capabilities.EVMClient(network.chainSelector.selector);
-
-  // Encode report payload for signing & submission
+  // Map outcome
   const outcomeUint = mapOutcomeToUint(parsed.result);
+
+  // Define Superposition Chain
+  const superpositionChain = defineChain({
+    id: 98985,
+    name: "Superposition Testnet",
+    nativeCurrency: { name: "SPN", symbol: "SPN", decimals: 18 },
+    rpcUrls: {
+      default: { http: ["https://testnet-rpc.superposition.so/"] },
+    },
+  });
+
+  // Setup Viem Wallet
+  // Use config-provided keys or environment variable override
+  const privKey = process.env.CRE_ETH_PRIVATE_KEY || (runtime as any).secrets?.CRE_ETH_PRIVATE_KEY;
+  if (!privKey) throw new Error("CRE_ETH_PRIVATE_KEY not found in env or secrets");
+
+  const account = privateKeyToAccount(privKey as Hex);
+
+  const client = createWalletClient({
+    account,
+    chain: superpositionChain,
+    transport: http()
+  });
+
+  // Prepare Report Data
   const reportData = makeReportData(marketId, outcomeUint, parsed.confidence, responseId);
 
-  runtime.log(
-    `Writing report — marketId: ${marketId}, outcome: ${parsed.result} (${outcomeUint}), confidence: ${parsed.confidence}, responseId: ${responseId}`
-  );
+  // Send Transaction calling onReport(bytes,bytes)
+  const hash = await client.writeContract({
+    address: evmCfg.marketAddress as Hex,
+    abi: [{
+      name: 'onReport',
+      type: 'function',
+      stateMutability: 'nonpayable',
+      inputs: [{ type: 'bytes', name: 'metadata' }, { type: 'bytes', name: 'report' }],
+      outputs: []
+    }],
+    functionName: 'onReport',
+    args: ["0x" as Hex, reportData]
+  });
 
-  // Sign the report using ECDSA over keccak256 (EVM-compatible signature)
-  const reportResponse = runtime
-    .report({
-      encodedPayload: hexToBase64(reportData),
-      encoderName: "evm",
-      signingAlgo: "ecdsa",
-      hashingAlgo: "keccak256",
-    })
-    .result();
-
-  // Submit the signed report to the SimpleMarket contract via onReport()
-  const writeReportResult = evmClient
-    .writeReport(runtime, {
-      receiver: evmCfg.marketAddress,
-      report: reportResponse,
-      gasConfig: {
-        gasLimit: runtime.config.evms[0].gasLimit,
-      },
-    })
-    .result();
-
-  runtime.log("Waiting for write report response");
-  const txHash = bytesToHex(writeReportResult.txHash ?? new Uint8Array(32));
-  runtime.log(`Write report transaction succeeded: ${txHash}`);
-
-  return txHash;
+  runtime.log(`Transaction sent: ${hash}`);
+  return hash;
 }
 
 /*********************************

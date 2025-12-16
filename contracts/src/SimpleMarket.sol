@@ -119,14 +119,15 @@ contract SimpleMarket is IReceiverTemplate {
     // ======== FUNCTIONS ========
     // ===========================
 
-    /// @notice Create a new market with a 1 minute prediction window.
+    /// @notice Create a new market with a custom prediction window.
     /// @param question The question describing the market.
+    /// @param duration The duration in seconds until the market closes.
     /// @return The ID of the newly created market.
-    function newMarket(string calldata question) public returns (uint256) {
+    function newMarket(string calldata question, uint256 duration) public returns (uint256) {
         Market storage m = markets[nextMarketId++];
         m.question = question;
         m.marketOpen = block.timestamp;
-        m.marketClose = block.timestamp + 3 minutes;
+        m.marketClose = block.timestamp + duration;
         return nextMarketId - 1;
     }
 

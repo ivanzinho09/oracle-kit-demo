@@ -1,0 +1,200 @@
+$ next dev
+ ⚠ Found lockfile missing swc dependencies, patching...
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+  if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                              ^
+
+Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+    at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+    at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+    at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+    at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+    at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+
+Node.js v22.13.1
+ ⨯ Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+Error: Failed to get registry from "pnpm".
+    at ignore-listed frames {
+  [cause]: Error: Command failed: pnpm config get registry 
+  /Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535
+    if (key == null || signature == null) throw new Error(`Cannot find matching keyid: ${JSON.stringify({ signatures, keys })}`);
+                                                ^
+  
+  Error: Cannot find matching keyid: {"signatures":[{"sig":"MEQCIEp43kjJf34XC2/1OcY02nz9+dJcHOh1LD+8w3msS3t/AiB++jGdnTnUPPMLYydcshycvi/6d0QExUn3TiZwlwqCqQ==","keyid":"SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"}],"keys":[{"expires":null,"keyid":"SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA","keytype":"ecdsa-sha2-nistp256","scheme":"ecdsa-sha2-nistp256","key":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1Olb3zMAFFxXKHiIkQO5cJ3Yhl5i6UPp+IhuteBJbuHcA5UogKo0EWtlWwW6KSaKoTNEYL7JlCQiVnkhBktUgg=="}]}
+      at verifySignature (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21535:47)
+      at fetchLatestStableVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21553:5)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async fetchLatestStableVersion2 (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:21672:14)
+      at async Engine.getDefaultVersion (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22298:23)
+      at async Engine.executePackageManagerRequest (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:22396:47)
+      at async Object.runMain (/Users/ivansn/.nvm/versions/node/v22.13.1/lib/node_modules/corepack/dist/lib/corepack.cjs:23102:5)
+  
+  Node.js v22.13.1
+  
+      at ignore-listed frames {
+    status: 1,
+    signal: null,
+    output: [
+      null,
+      <Buffer >,
+      <Buffer 2f 55 73 65 72 73 2f 69 76 61 6e 73 6e 2f 2e 6e 76 6d 2f 76 65 72 73 69 6f 6e 73 2f 6e 6f 64 65 2f 76 32 32 2e 31 33 2e 31 2f 6c 69 62 2f 6e 6f 64 65 ... 1640 more bytes>
+    ],
+    pid: 95600,
+    stdout: <Buffer >,
+    stderr: <Buffer 2f 55 73 65 72 73 2f 69 76 61 6e 73 6e 2f 2e 6e 76 6d 2f 76 65 72 73 69 6f 6e 73 2f 6e 6f 64 65 2f 76 32 32 2e 31 33 2e 31 2f 6c 69 62 2f 6e 6f 64 65 ... 1640 more bytes>
+  }
+}
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Local:         http://localhost:3000
+   - Network:       http://192.168.1.10:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.3s
+ GET / 200 in 1770ms (compile: 1615ms, render: 154ms)
+ POST /api/market/create 200 in 2.7s (compile: 447ms, render: 2.3s)
+[API] Starting settlement for Market 23 on https://testnet-rpc.superposition.so/
+[API] Requesting settlement (Status: Open)...
+[API] Settlement Requested: 0xbc44646aa7f9e178351579e05cee94c55205c3088634251afac3a73bd5ff8a16
+[API] Settling Question: "Is Python a programming language? [CONSORTIUM]"
+[API] 🤖 CONSORTIUM MODE ACTIVATED: 5 Judges Summoned
+[Judge 1] Voted: YES (Conf: 10000)
+[Judge 2] Voted: YES (Conf: 10000)
+[Judge 3] Voted: YES (Conf: 10000)
+[Judge 4] Voted: YES (Conf: 10000)
+[Judge 5] Voted: YES (Conf: 10000)
+[Consortium] Final Verdict: YES (Votes: {"YES":5,"NO":0,"INCONCLUSIVE":0}, Avg Conf: 10000)
+[API] Submitting Report: Outcome=YES, Conf=10000
+[API] Report Sent: 0x22e7e0530ab770f7e119e6cef771fe2e7590d565eba5fba85e40eaa71e2fdf0c
+[API] Firestore updated for gemini-1765773974174
+ POST /api/market/settle 200 in 10.3s (compile: 1146ms, render: 9.2s)
+ GET / 200 in 77ms (compile: 20ms, render: 57ms)
+ POST /api/market/create 200 in 1988ms (compile: 27ms, render: 1961ms)
+[API] Starting settlement for Market 24 on https://testnet-rpc.superposition.so/
+[API] Requesting settlement (Status: Open)...
+Error: nonce has already been used (transaction="0x02f88d830182a940808401312d0082d9f094c74f5d0e5b665e3b4d9274790cb9f44130308c9e80a4f4fc6cdb0000000000000000000000000000000000000000000000000000000000000018c080a00a39c5f4ddf15170699dcd93ec0c0dcdcf07df0e6013c9f7f40fb073f41719efa0140431cfa1bf3464f13eb106377484c1ee95ad36defd7806f9057d9c9d6d23fe", info={ "error": { "code": -32000, "message": "nonce too low: address 0x130A94D78720C45fd0F27CE26429ceF2d6573Db9, tx: 64 state: 65" } }, code=NONCE_EXPIRED, version=6.16.0)
+    at ignore-listed frames {
+  code: 'NONCE_EXPIRED',
+  transaction: '0x02f88d830182a940808401312d0082d9f094c74f5d0e5b665e3b4d9274790cb9f44130308c9e80a4f4fc6cdb0000000000000000000000000000000000000000000000000000000000000018c080a00a39c5f4ddf15170699dcd93ec0c0dcdcf07df0e6013c9f7f40fb073f41719efa0140431cfa1bf3464f13eb106377484c1ee95ad36defd7806f9057d9c9d6d23fe',
+  info: [Object],
+  shortMessage: 'nonce has already been used'
+}
+ POST /api/market/settle 500 in 1871ms (compile: 4ms, render: 1866ms)
+ POST /api/market/create 200 in 2.1s (compile: 23ms, render: 2.1s)
+[API] Starting settlement for Market 25 on https://testnet-rpc.superposition.so/
+[API] Requesting settlement (Status: Open)...
+[API] Settlement Requested: 0x3ff0200f7d99a37a1b8c3e035c22db0221f32fb076b195e7f850c30d74ae4e86
+[API] Settling Question: "Will solana breakpoint happen in the UAE in 2025? [CONSORTIUM]"
+[API] 🤖 CONSORTIUM MODE ACTIVATED: 5 Judges Summoned
+[Judge 1] Voted: YES (Conf: 10000)
+[Judge 2] Voted: YES (Conf: 10000)
+[Judge 3] Voted: YES (Conf: 10000)
+[Judge 4] Voted: YES (Conf: 10000)
+[Judge 5] Voted: YES (Conf: 10000)
+[Consortium] Final Verdict: YES (Votes: {"YES":5,"NO":0,"INCONCLUSIVE":0}, Avg Conf: 10000)
+[API] Submitting Report: Outcome=YES, Conf=10000
+[API] Report Sent: 0x4947d549ed31328a007b2da5ab479b0c3836dafd0d115d4c98646e3a7a916c54
+[API] Firestore updated for gemini-1765774032206
+ POST /api/market/settle 200 in 6.6s (compile: 13ms, render: 6.6s)
+ POST /api/market/create 200 in 2.0s (compile: 22ms, render: 2.0s)
+[API] Starting settlement for Market 26 on https://testnet-rpc.superposition.so/
+[API] Requesting settlement (Status: Open)...
+[API] Settlement Requested: 0x9d3a39143571c5e22222667e86b708108b02910f03e28ec7152a6aff4a341f37
+[API] Settling Question: "Will There be a coinfest asia in bali in 2025?"
+[API] Standard Mode: Single Judge
+[API] Judge Verdict: YES (Conf: 10000)
+[API] Submitting Report: Outcome=YES, Conf=10000
+[API] Report Sent: 0x85a1c0919959d4979e47c40d893e90a9ca96f2cf27c770f7393b2fb7027050ec
+[API] Firestore updated for gemini-1765774086036
+ POST /api/market/settle 200 in 6.1s (compile: 12ms, render: 6.0s)
+ ✓ Compiled in 103ms
+ ✓ Compiled in 34ms
+ ✓ Compiled in 59ms
+ ✓ Compiled in 80ms
+ GET / 200 in 247ms (compile: 211ms, render: 36ms)

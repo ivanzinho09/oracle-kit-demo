@@ -13,6 +13,7 @@ docs/
 # secrets
 .env
 keys.json
+cre-workflow/secrets.yaml
 
 
 #node_modules

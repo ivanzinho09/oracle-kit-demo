@@ -65,35 +65,35 @@ export function writeToFirestore(
  */
 const postFirebaseIdToken =
   (firebaseApiKey: string) =>
-  (sendRequester: HTTPSendRequester, config: Config): SignupNewUserResponse => {
-    const dataToSend = {
-      returnSecureToken: true,
+    (sendRequester: HTTPSendRequester, config: Config): SignupNewUserResponse => {
+      const dataToSend = {
+        returnSecureToken: true,
+      };
+
+      const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
+      const body = Buffer.from(bodyBytes).toString("base64");
+
+      const req = {
+        url: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseApiKey}`,
+        method: "POST" as const,
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cacheSettings: {
+          readFromCache: true,
+          maxAgeMs: 60_000,
+        },
+      };
+
+      const resp = sendRequester.sendRequest(req).result();
+      if (!ok(resp)) throw new Error(`HTTP request failed with status: ${resp.statusCode}`);
+
+      const bodyText = new TextDecoder().decode(resp.body);
+      const externalResp = JSON.parse(bodyText) as SignupNewUserResponse;
+
+      return externalResp;
     };
-
-    const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
-    const body = Buffer.from(bodyBytes).toString("base64");
-
-    const req = {
-      url: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseApiKey}`,
-      method: "POST" as const,
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cacheSettings: {
-        readFromCache: true,
-        maxAgeMs: 60_000,
-      },
-    };
-
-    const resp = sendRequester.sendRequest(req).result();
-    if (!ok(resp)) throw new Error(`HTTP request failed with status: ${resp.statusCode}`);
-
-    const bodyText = new TextDecoder().decode(resp.body);
-    const externalResp = JSON.parse(bodyText) as SignupNewUserResponse;
-
-    return externalResp;
-  };
 
 /**
  * Writes a document to Firestore with settlement data.
@@ -107,41 +107,44 @@ const postFirebaseIdToken =
  */
 const postFirestoreWrite =
   (idToken: string, projectId: string, question: string, response: GeminiResponse, txHash: string) =>
-  (sendRequester: HTTPSendRequester, config: Config): FirestoreWriteResponse => {
-    const dataToSend: FirestoreWriteData = {
-      fields: {
-        statusCode: { integerValue: response.statusCode },
-        question: { stringValue: question },
-        geminiResponse: { stringValue: response.geminiResponse },
-        responseId: { stringValue: response.responseId },
-        rawJsonString: { stringValue: response.rawJsonString },
-        txHash: { stringValue: txHash },
-        createdAt: { integerValue: Date.now() },
-      },
+    (sendRequester: HTTPSendRequester, config: Config): FirestoreWriteResponse => {
+      const dataToSend: FirestoreWriteData = {
+        fields: {
+          statusCode: { integerValue: response.statusCode },
+          question: { stringValue: question },
+          geminiResponse: { stringValue: response.geminiResponse },
+          responseId: { stringValue: response.responseId },
+          rawJsonString: { stringValue: response.rawJsonString },
+          txHash: { stringValue: txHash },
+          createdAt: { integerValue: Date.now() },
+        },
+      };
+
+      const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
+      const body = Buffer.from(bodyBytes).toString("base64");
+
+      const req = {
+        url: `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/demo/?documentId=${response.responseId}`,
+        method: "POST" as const,
+        body: body,
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        },
+        cacheSettings: {
+          readFromCache: true,
+          maxAgeMs: 60_000,
+        },
+      };
+
+      const resp = sendRequester.sendRequest(req).result();
+      const bodyText = new TextDecoder().decode(resp.body);
+
+      if (!ok(resp)) {
+        throw new Error(`Firestore Error ${resp.statusCode}: ${bodyText}`);
+      }
+
+      const externalResp = JSON.parse(bodyText) as FirestoreWriteResponse;
+
+      return externalResp;
     };
-
-    const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
-    const body = Buffer.from(bodyBytes).toString("base64");
-
-    const req = {
-      url: `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/demo/?documentId=${response.responseId}`,
-      method: "POST" as const,
-      body: body,
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-        "Content-Type": "application/json",
-      },
-      cacheSettings: {
-        readFromCache: true,
-        maxAgeMs: 60_000,
-      },
-    };
-
-    const resp = sendRequester.sendRequest(req).result();
-    if (!ok(resp)) throw new Error(`HTTP request failed with status: ${resp.statusCode}`);
-
-    const bodyText = new TextDecoder().decode(resp.body);
-    const externalResp = JSON.parse(bodyText) as FirestoreWriteResponse;
-
-    return externalResp;
-  };

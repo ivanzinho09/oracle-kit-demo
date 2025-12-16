@@ -71,8 +71,14 @@ const onLogTrigger = (runtime: Runtime<Config>, log: EVMLog): string => {
     // Writes settlement data to Firestore for audit trail and frontend display.
     // See firebase.ts for implementation details.
 
-    const firestoreResult: FirestoreWriteResponse = writeToFirestore(runtime, question, result, txHash);
-    runtime.log(`Firestore Document: ${firestoreResult.name}`);
+    try {
+      const firestoreResult: FirestoreWriteResponse = writeToFirestore(runtime, question, result, txHash);
+      runtime.log(`Firestore Document: ${firestoreResult.name}`);
+    } catch (fsErr) {
+      // Don't fail the whole workflow just because logging failed
+      runtime.log(`[WARNING] Failed to write to Firestore (Audit log skipped): ${fsErr}`);
+      runtime.log("Note: This does not affect the on-chain settlement.");
+    }
 
     return "Settlement Request Processed";
   } catch (err) {

@@ -1,7 +1,297 @@
 @import "tailwindcss";
 
+/* 9Lives Retro Windows 95 / Early Mac Theme */
+:root {
+  /* Core Colors - Inspired by 9Lives */
+  --bg-primary: #c0c0c0;
+  --bg-secondary: #dfdfdf;
+  --bg-window: #ffffff;
+  --bg-dark: #000000;
+
+  /* Border colors for 3D effect */
+  --border-light: #ffffff;
+  --border-dark: #808080;
+  --border-darker: #404040;
+
+  /* Accent colors */
+  --accent-green: #90EE90;
+  --accent-red: #FFB6C1;
+  --accent-blue: #000080;
+  --accent-purple: #800080;
+  --accent-yellow: #FFFF00;
+
+  /* Text colors */
+  --text-primary: #000000;
+  --text-secondary: #404040;
+  --text-link: #0000FF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background: #0a0a0a;
-  color: #ededed;
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'W95FA', 'Chicago', 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Retro Window Panel - Raised */
+.retro-panel {
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-darker) var(--border-darker) var(--border-light);
+  box-shadow: inset 1px 1px 0 var(--border-light), inset -1px -1px 0 var(--border-dark);
+}
+
+/* Retro Window Panel - Sunken/Inset */
+.retro-inset {
+  background: var(--bg-window);
+  border: 2px solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  box-shadow: inset 1px 1px 0 var(--border-darker);
+}
+
+/* Retro Button */
+.retro-button {
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-darker) var(--border-darker) var(--border-light);
+  padding: 4px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-primary);
+  box-shadow: 1px 1px 0 var(--border-dark);
+}
+
+.retro-button:hover {
+  background: #e8e8e8;
+}
+
+.retro-button:active {
+  border-color: var(--border-darker) var(--border-light) var(--border-light) var(--border-darker);
+  box-shadow: inset 1px 1px 0 var(--border-dark);
+}
+
+.retro-button:disabled {
+  color: var(--border-dark);
+  cursor: not-allowed;
+}
+
+/* Retro Button - Green (YES/UP) */
+.retro-button-green {
+  background: var(--accent-green);
+  border: 2px solid;
+  border-color: #b8ffb8 #2d8a2d #2d8a2d #b8ffb8;
+}
+
+.retro-button-green:hover {
+  background: #a8e8a8;
+}
+
+/* Retro Button - Red (NO/DOWN) */
+.retro-button-red {
+  background: var(--accent-red);
+  border: 2px solid;
+  border-color: #ffd8dd #8a2d3d #8a2d3d #ffd8dd;
+}
+
+.retro-button-red:hover {
+  background: #f0a8b0;
+}
+
+/* Retro Input */
+.retro-input {
+  background: var(--bg-window);
+  border: 2px solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  box-shadow: inset 1px 1px 0 var(--border-darker);
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.retro-input:focus {
+  outline: 1px dotted var(--text-primary);
+  outline-offset: -3px;
+}
+
+/* Retro Checkbox */
+.retro-checkbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  background: var(--bg-window);
+  border: 2px solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  cursor: pointer;
+  position: relative;
+}
+
+.retro-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -3px;
+  left: 1px;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+/* Retro Window Title Bar */
+.retro-titlebar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: white;
+  padding: 3px 4px;
+  font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Retro Tabs */
+.retro-tab {
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-darker) var(--border-darker) var(--border-light);
+  border-bottom: none;
+  padding: 4px 12px;
+  position: relative;
+  top: 2px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.retro-tab.active {
+  background: var(--bg-window);
+  border-bottom: 2px solid var(--bg-window);
+  z-index: 1;
+}
+
+/* Retro Divider */
+.retro-divider {
+  border: none;
+  border-top: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-light);
+  margin: 8px 0;
+}
+
+/* Retro Progress Bar */
+.retro-progress {
+  height: 16px;
+  background: var(--bg-window);
+  border: 2px solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  overflow: hidden;
+}
+
+.retro-progress-bar {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #000080 0px,
+    #000080 8px,
+    transparent 8px,
+    transparent 10px
+  );
+}
+
+/* Pixelated Icons */
+.pixel-icon {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Retro Link */
+.retro-link {
+  color: var(--text-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.retro-link:hover {
+  color: #0000cc;
+}
+
+/* Status indicator dots */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.green {
+  background: #00aa00;
+  box-shadow: 0 0 2px #00ff00;
+}
+
+.status-dot.red {
+  background: #aa0000;
+  box-shadow: 0 0 2px #ff0000;
+}
+
+.status-dot.yellow {
+  background: #aaaa00;
+  box-shadow: 0 0 2px #ffff00;
+}
+
+/* Retro Badge */
+.retro-badge {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-dark);
+  padding: 2px 6px;
+  font-size: 11px;
+  display: inline-block;
+}
+
+.retro-badge.green {
+  background: var(--accent-green);
+}
+
+.retro-badge.red {
+  background: var(--accent-red);
+}
+
+/* Retro Countdown Display */
+.retro-countdown {
+  font-family: 'Courier New', monospace;
+  background: #000;
+  color: #0f0;
+  padding: 2px 6px;
+  border: 1px inset var(--border-dark);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  background-image: url("data:image/svg+xml,%3Csvg width='2' height='2' viewBox='0 0 2 2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23808080'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23808080'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #404040 #404040 #ffffff;
+}
+
+::-webkit-scrollbar-button {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #404040 #404040 #ffffff;
+}
+
+/* Selection styling */
+::selection {
+  background: #000080;
+  color: #ffffff;
 }

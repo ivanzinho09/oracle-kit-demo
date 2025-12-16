@@ -39,9 +39,9 @@ STRICT RULES:
   {"result":"INCONCLUSIVE","confidence":0}
 
 DECISION RULES:
-- "YES" = the event happened as stated.
-- "NO" = the event did not happen as stated.
-- "INCONCLUSIVE" = cannot be determined from publicly verifiable information.
+- "YES" = the event happened as stated (even if the time window is still open).
+- "NO" = the event did not happen, AND the time window for it to happen has passed.
+- "INCONCLUSIVE" = the event has NOT happened yet, but the time window is still open (e.g., "in 2025" and it is currently 2025).
 - Do not speculate. Use only objective, verifiable information.
 
 REMINDER:
@@ -64,21 +64,21 @@ const userPrompt = `Determine the outcome of this market based on factual inform
  * @returns Gemini API response with outcome and confidence score
  */
 export const askGemini = (runtime: Runtime<Config>, marketId: string, question: string): GeminiResponse => {
-    // API key for the outbound LLM request (stored in CRE secrets)
-    const geminiApiKey = runtime.getSecret({ id: "GEMINI_API_KEY" }).result();
+  // API key for the outbound LLM request (stored in CRE secrets)
+  const geminiApiKey = runtime.getSecret({ id: "GEMINI_API_KEY" }).result();
 
-      // Fan out the HTTP request through CRE; aggregate identical responses
-    const httpClient = new cre.capabilities.HTTPClient();
+  // Fan out the HTTP request through CRE; aggregate identical responses
+  const httpClient = new cre.capabilities.HTTPClient();
 
-    const result: GeminiResponse = httpClient
-      .sendRequest(
-        runtime,
-        PostGeminiData({ marketId, question}, geminiApiKey.value),
-        consensusIdenticalAggregation<GeminiResponse>()
-      )(runtime.config)
-      .result();
+  const result: GeminiResponse = httpClient
+    .sendRequest(
+      runtime,
+      PostGeminiData({ marketId, question }, geminiApiKey.value),
+      consensusIdenticalAggregation<GeminiResponse>()
+    )(runtime.config)
+    .result();
 
-      return result;
+  return result;
 }
 
 /*********************************
@@ -95,62 +95,62 @@ export const askGemini = (runtime: Runtime<Config>, marketId: string, question: 
  */
 const PostGeminiData =
   (logDetails: LogDetails, geminiApiKey: string) =>
-  (sendRequester: HTTPSendRequester, config: Config): GeminiResponse => {
-    // Compose the structured instruction + content for deterministic JSON output
-    const dataToSend: GeminiData = {
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      tools: [
-        {
-          // Enable Google search grounding for factual verification
-          google_search: {},
+    (sendRequester: HTTPSendRequester, config: Config): GeminiResponse => {
+      // Compose the structured instruction + content for deterministic JSON output
+      const dataToSend: GeminiData = {
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        tools: [
+          {
+            // Enable Google search grounding for factual verification
+            google_search: {},
+          },
+        ],
+        contents: [
+          {
+            parts: [
+              {
+                // User prompt with the market question appended
+                text: userPrompt + logDetails.question,
+              },
+            ],
+          },
+        ]
+      };
+
+      // Encode request body as base64 (required by CRE HTTP capability)
+      const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
+      const body = Buffer.from(bodyBytes).toString("base64");
+
+      const req = {
+        url: `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent`,
+        method: "POST" as const,
+        body,
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": geminiApiKey,
         },
-      ],
-      contents: [
-        {
-          parts: [
-            {
-              // User prompt with the market question appended
-              text: userPrompt + logDetails.question,
-            },
-          ],
+        cacheSettings: {
+          readFromCache: true,
+          maxAgeMs: 60_000,
         },
-      ]
+      };
+
+      // Perform the request within CRE infra; result() yields the response
+      const resp = sendRequester.sendRequest(req).result();
+      const bodyText = new TextDecoder().decode(resp.body);
+
+      if (!ok(resp)) throw new Error(`HTTP request failed with status: ${resp.statusCode}. Error :${bodyText}`);
+
+      // Parse and extract the model text
+      const externalResp = JSON.parse(bodyText) as GeminiApiResponse;
+
+      const text = externalResp?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("Malformed LLM response: missing candidates[0].content.parts[0].text");
+
+      return {
+        statusCode: resp.statusCode,
+        geminiResponse: text,
+        responseId: externalResp.responseId,
+        rawJsonString: bodyText,
+      };
     };
-
-    // Encode request body as base64 (required by CRE HTTP capability)
-    const bodyBytes = new TextEncoder().encode(JSON.stringify(dataToSend));
-    const body = Buffer.from(bodyBytes).toString("base64");
-
-    const req = {
-      url: `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent`,
-      method: "POST" as const,
-      body,
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": geminiApiKey,
-      },
-      cacheSettings: {
-        readFromCache: true,
-        maxAgeMs: 60_000,
-      },
-    };
-
-    // Perform the request within CRE infra; result() yields the response
-    const resp = sendRequester.sendRequest(req).result();
-    const bodyText = new TextDecoder().decode(resp.body);
-
-    if (!ok(resp)) throw new Error(`HTTP request failed with status: ${resp.statusCode}. Error :${bodyText}`);
-
-    // Parse and extract the model text
-    const externalResp = JSON.parse(bodyText) as GeminiApiResponse;
-
-    const text = externalResp?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("Malformed LLM response: missing candidates[0].content.parts[0].text");
-
-    return {
-      statusCode: resp.statusCode,
-      geminiResponse: text,
-      responseId: externalResp.responseId,
-      rawJsonString: bodyText,
-    };
-  };
